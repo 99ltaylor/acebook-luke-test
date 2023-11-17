@@ -65,4 +65,4 @@ jobs:
                   aws deploy create-deployment \
                   --application-name luke-acebook \
                   --deployment-group luke-acebook \
-                  --s3-location bucket=luke-acebook, key=deployable-artefact.zip,bundleType=zip
+                  --s3-location bucket=luke-acebook,key=deployable-artifact.zip,bundleType=zip
