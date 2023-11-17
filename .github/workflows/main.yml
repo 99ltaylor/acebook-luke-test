@@ -1,6 +1,6 @@
 # The name of the workflow
 # Testing new branch
-name: Build and Test
+name: build_test_and_deploy
 
 # This workflow will run on any push to the repository
 on:
@@ -36,3 +36,34 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           start: npm run start:test
+
+  deploy:
+      # Similar to docker, we set up a virtual machine to run our tests
+      runs-on: ubuntu-latest
+      needs: test
+      
+      steps:
+          - name: Check out the repo
+            uses: actions/checkout@v4
+        
+          - name: configure AWS Credentials
+            uses: aws-actions/configure-aws-credentials@v1
+            with:
+              aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+              aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+              aws-region: eu-west-2
+          
+          - name: AWS deploy push to S3
+            run: |
+                aws deploy push \
+                  --application-name luke-acebook \
+                  --ignore-hidden-files \
+                  --S3-location S3://luke-acebook/deployable-artifact.zip
+                  --source .
+          
+          - name: Deploy to CodeDeploy
+            run: |
+                  aws deploy create-deployment \
+                  --application-name luke-acebook \
+                  --deployment-group luke-acebook \
+                  --S3-location bucket=luke-acebook, key=deployable-artefact.zip,bundleType=zip
