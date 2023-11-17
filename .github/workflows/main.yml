@@ -58,7 +58,7 @@ jobs:
                 aws deploy push \
                   --application-name luke-acebook \
                   --ignore-hidden-files \
-                  --S3-location S3://luke-acebook/deployable-artifact.zip
+                  --s3-location S3://luke-acebook/deployable-artifact.zip
                   --source .
           
           - name: Deploy to CodeDeploy
@@ -66,4 +66,4 @@ jobs:
                   aws deploy create-deployment \
                   --application-name luke-acebook \
                   --deployment-group luke-acebook \
-                  --S3-location bucket=luke-acebook, key=deployable-artefact.zip,bundleType=zip
+                  --s3-location bucket=luke-acebook, key=deployable-artefact.zip,bundleType=zip
