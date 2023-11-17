@@ -62,7 +62,7 @@ jobs:
           
           - name: Deploy to CodeDeploy
             run: |
-                  aws deploy create-deployment\
-                  --application-name luke-acebook\
-                  --deployment-group luke-acebook\
+                  aws deploy create-deployment \
+                  --application-name luke-acebook \
+                  --deployment-group luke-acebook \
                   --s3-location bucket=luke-acebook, key=deployable-artefact.zip,bundleType=zip
